@@ -10,7 +10,7 @@ Java ☕
 
 C++ 💻
 
-Funcionalidades
+# Funcionalidades
 
 Inserção de nós
 
