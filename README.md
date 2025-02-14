@@ -27,6 +27,7 @@ Cálculo da altura da árvore
 
 ```
 /
+├── Analise-Jesse/  # Analises dos tempos das implementações
 ├── C++-Denis/      # Implementações em C++ por Denis
 ├── Java-Emerson/   # Implementações em Java por Emerson
 ├── Python-Allan/   # Implementações em Python por Allan
