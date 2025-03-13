@@ -20,11 +20,11 @@ public class BinaryTree {
         if (root == null) {
             return new Node(value); // Cria um novo nó se a posição estiver vazia
         }
-        if (value < root.getValue()) {
-            root.setLeft(insertRec(value, root.getLeft())); // Insere na subárvore esquerda
+        if (value < root.value) {
+            root.left = insertRec(value, root.left); // Insere na subárvore esquerda
         }
-        if (value > root.getValue()) {
-            root.setRight(insertRec(value, root.getRight())); // Insere na subárvore direita
+        if (value > root.value) {
+            root.right = insertRec(value, root.right); // Insere na subárvore direita
         }
         return root;
     }
@@ -39,11 +39,11 @@ public class BinaryTree {
         if (root == null) {
             return null; // Retorna null se o nó não for encontrado
         }
-        if (value < root.getValue()) {
-            return searchRec(value, root.getLeft()); // Busca na subárvore esquerda
+        if (value < root.value) {
+            return searchRec(value, root.left); // Busca na subárvore esquerda
         }
-        if (value > root.getValue()) {
-            return searchRec(value, root.getRight()); // Busca na subárvore direita
+        if (value > root.value) {
+            return searchRec(value, root.right); // Busca na subárvore direita
         }
         return root; // Retorna o nó encontrado
     }
@@ -58,29 +58,29 @@ public class BinaryTree {
         if (node == null) {
             return null; // Retorna null se o nó não for encontrado
         }
-        if (value < node.getValue()) {
-            node.setLeft(removeRec(value, node.getLeft())); // Procura na subárvore esquerda
-        } else if (value > node.getValue()) {
-            node.setRight(removeRec(value, node.getRight())); // Procura na subárvore direita
+        if (value < node.value) {
+            node.left = removeRec(value, node.left); // Procura na subárvore esquerda
+        } else if (value > node.value) {
+            node.right = removeRec(value, node.right); // Procura na subárvore direita
         }
         else {
             // Caso 1: Nó folha (sem filhos)
-            if (node.getLeft() == null && node.getRight() == null) {
+            if (node.left == null && node.right == null) {
                 return null;
             }
             // Caso 2: Nó com apenas um filho
-            if (node.getLeft() == null) {
-                return node.getRight();
-            } else if (node.getRight() == null) {
-                return node.getLeft();
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
             }
             // Caso 3: Nó com dois filhos
-            Node temp = node.getRight();
-            while (temp.getLeft() != null) {
-                temp = temp.getLeft(); // Encontra o sucessor (menor valor da subárvore direita)
+            Node temp = node.right;
+            while (temp.left != null) {
+                temp = temp.left; // Encontra o sucessor (menor valor da subárvore direita)
             }
-            node.setValue(temp.getValue()); // Substitui o valor pelo sucessor
-            node.setRight(removeRec(temp.getValue(), node.getRight())); // Remove o nó sucessor
+            node.value = temp.value; // Substitui o valor pelo sucessor
+            node.right = removeRec(temp.value, node.right); // Remove o nó sucessor
         }
         return node;
     }
@@ -93,9 +93,21 @@ public class BinaryTree {
     // Método recursivo para percorrer a árvore em ordem
     private void recInOrder(Node root) {
         if (root != null) {
-            recInOrder(root.getLeft()); // Visita a subárvore esquerda
-            System.out.println(root.getValue()); // Imprime o valor do nó atual
-            recInOrder(root.getRight()); // Visita a subárvore direita
+            recInOrder(root.left); // Visita a subárvore esquerda
+            System.out.println(root.value); // Imprime o valor do nó atual
+            recInOrder(root.right); // Visita a subárvore direita
+        }
+    }
+
+    public class Node {
+        public int value;
+        public Node left;
+        public Node right;
+
+        public Node(int value) {
+            this.value = value;
+            this.left = null;
+            this.right = null;
         }
     }
 }
