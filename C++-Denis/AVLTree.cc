@@ -3,7 +3,7 @@ using namespace std;
 
 /*
     Aluno: Denis Almeida Ferreira
-    Email: denis.almeida.ferreira@ccc.ufcg.edu.break
+    Email: denis.almeida.ferreira@ccc.ufcg.edu.br
     Matrícula: 123210975
     Usuário no GitHub: DenisAlmeidaFerreira
 
@@ -251,39 +251,3 @@ public:
         return getBalanceFactor() <= 1 && isBalancedRec(node->left) && isBalancedRec(node->right);
     }
 };
-
-int main() {
-    AVLTree tree;
-    tree.root = tree.insert(50);
-    tree.root = tree.insert(30);
-    tree.root = tree.insert(70);
-    tree.root = tree.insert(20);
-    tree.root = tree.insert(40);
-    tree.root = tree.insert(60);
-    tree.root = tree.insert(80);
-    tree.root = tree.insert(90);
-    tree.root = tree.insert(100);
-    tree.root = tree.insert(110);
-    tree.root = tree.insert(105);
-    tree.root = tree.insert(120);
-
-    cout << "Altura da Arvore: " << tree.height() << endl;
-    cout << "Numero de Nos: " << tree.countNodes() << endl;
-    cout << "Arvore balanceada? " << (tree.isBalanced() ? "Sim" : "Nao") << endl;
-
-    cout << "Percurso Em-Ordem: ";
-    tree.inOrder();
-    cout << endl;
-
-    tree.root = tree.remove(80);
-    cout << "Percurso Em-Ordem apos remocao de 80: ";
-    tree.inOrder();
-    cout << endl;
-
-    tree.root = tree.remove(50);
-    cout << "Percurso Em-Ordem apos remocao de 50: ";
-    tree.inOrder();
-    cout << endl;
-    
-    return 0;
-}
