@@ -16,7 +16,17 @@ public class BinaryTreeAVL {
 
     // Retorna a altura de um nó
     private int getHeight(Node node) {
-        return (node == null) ? 0 : node.getHeight();
+        return (node == null) ? 0 : node.height;
+    }
+
+    // Atualiza a altura de um nó
+    private void updateHeight(Node node) {
+        node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+    }
+
+    // Calcula o fator de balanceamento de um nó
+    private int getBalanceFactor(Node node) {
+        return (node == null) ? 0 : (getHeight(node.left) - getHeight(node.right));
     }
 
     // Insere um valor na árvore
@@ -24,28 +34,13 @@ public class BinaryTreeAVL {
         root = insertRec(value, root);
     }
 
-    // Remove um valor da árvore
-    public void remove(int value) {
-        root = removeRec(value, root);
-    }
-
-    // Atualiza a altura de um nó
-    private void updateHeight(Node node) {
-        node.setHeight(1 + Math.max(getHeight(node.getLeft()), getHeight(node.getRight())));
-    }
-
-    // Calcula o fator de balanceamento de um nó
-    private int getBalanceFactor(Node node) {
-        return (node == null) ? 0 : (getHeight(node.getLeft()) - getHeight(node.getRight()));
-    }
-
     // Método recursivo para inserir um nó sempre balanceando a árvore
     private Node insertRec(int value, Node root) {
         if (root == null) return new Node(value);
-        if (value < root.getValue())
-            root.setLeft(insertRec(value, root.getLeft()));
-        else if (value > root.getValue())
-            root.setRight(insertRec(value, root.getRight()));
+        if (value < root.value)
+            root.left = insertRec(value, root.left);
+        else if (value > root.value)
+            root.right = insertRec(value, root.right);
         else
             return root;
 
@@ -56,23 +51,23 @@ public class BinaryTreeAVL {
         // Realiza rotações para manter a árvore balanceada
         if (balanceFactor > 1) {
             // Caso 1 Rotação simples a direita
-            if (value < root.getLeft().getValue()) {
+            if (value < root.left.value) {
                 return rotateRight(root);
             }
             // Caso 2 Rotação Dupla a Direita
-            else if (value > root.getLeft().getValue()) {
-                root.setLeft(rotateLeft(root.getLeft()));
+            else if (value > root.left.value) {
+                root.left = rotateLeft(root.left);
                 return rotateRight(root);
             }
         }
         else if (balanceFactor < -1) {
-            // Caso 1 Rotação simples a direita
-            if (value > root.getRight().getValue()) {
+            // Caso 1 Rotação simples a esquerda
+            if (value > root.right.value) {
                 return rotateLeft(root);
             }
-            // Caso 2 Rotação dupla a direita
-            else if (value < root.getRight().getValue()) {
-                root.setRight(rotateRight(root.getRight()));
+            // Caso 2 Rotação dupla a esquerda
+            else if (value < root.right.value) {
+                root.right = rotateRight(root.right);
                 return rotateLeft(root);
             }
         }
@@ -80,32 +75,37 @@ public class BinaryTreeAVL {
         return root;
     }
 
+    // Remove um valor da árvore
+    public void remove(int value) {
+        root = removeRec(value, root);
+    }
+
     // Método recursivo para remover um nó
     private Node removeRec(int value, Node root) {
         if (root == null) return null;
-        if (value < root.getValue()) {
-            root.setLeft(removeRec(value, root.getLeft()));
-        } else if (value > root.getValue()) {
-            root.setRight(removeRec(value, root.getRight()));
+        if (value < root.value) {
+            root.left = removeRec(value, root.left);
+        } else if (value > root.value) {
+            root.right = removeRec(value, root.right);
         }
         else {
             // Caso 1: Nó sem filhos
-            if (root.getLeft() == null && root.getRight() == null) {
+            if (root.left == null && root.right == null) {
                 return null;
             }
             // Caso 2: Nó com apenas um filho
-            if (root.getLeft() == null && root.getRight() != null) {
-                return root.getRight();
-            } else if (root.getRight() == null && root.getLeft() != null) {
-                return root.getLeft();
+            if (root.left == null && root.right != null) {
+                return root.right;
+            } else if (root.right == null && root.left != null) {
+                return root.left;
             }
             // Caso 3: Nó com dois filhos (pega o sucessor)
-            Node temp = root.getRight();
-            while (temp.getLeft() != null) {
-                temp = temp.getLeft();
+            Node temp = root.right;
+            while (temp.left != null) {
+                temp = temp.left;
             }
-            root.setValue(temp.getValue());
-            root.setRight(removeRec(temp.getValue(), root.getRight()));
+            root.value = temp.value;
+            root.right = removeRec(temp.value, root.right);
         }
 
         updateHeight(root);
@@ -114,22 +114,22 @@ public class BinaryTreeAVL {
         // Realiza rotações para manter o balanceamento
         if (balanceFactor > 1) {
             // Rotação simples a direita
-            if (getBalanceFactor(root.getLeft()) >= 0) {
+            if (getBalanceFactor(root.left) >= 0) {
                 return rotateRight(root);
             } else {
                 // Rotação dupla a direita
-                root.setLeft(rotateLeft(root.getLeft()));
+                root.left = rotateLeft(root.left);
                 return rotateRight(root);
             }
         }
         else if (balanceFactor < -1) {
             // Rotação simples a esquerda
-            if (getBalanceFactor(root.getRight()) >= 0) {
+            if (getBalanceFactor(root.right) >= 0) {
                 return rotateLeft(root);
             }
             // Rotação dupla a esquerda
             else {
-                root.setRight(rotateRight(root.getRight()));
+                root.right = rotateRight(root.right);
                 return rotateLeft(root);
             }
         }
@@ -137,13 +137,25 @@ public class BinaryTreeAVL {
         return root;
     }
 
+    // Procura e retorna um determinado valor na árvore
+    public Node search(int value) {
+        return searchRec(root, value);
+    }
+
+    private Node searchRec(Node node, int value) {
+        if (node == null) return null;
+        if (node.value == value) return node;
+        else if (value < node.value) return searchRec(node.left, value);
+        else return searchRec(node.right, value);
+    }
+
     // Método de rotação a esquerda
     private Node rotateLeft(Node root) {
-        Node newRoot = root.getRight();
-        Node subTree = newRoot.getLeft();
+        Node newRoot = root.right;
+        Node subTree = newRoot.left;
 
-        newRoot.setLeft(root);
-        root.setRight(subTree);
+        newRoot.left = root;
+        root.right = subTree;
 
         updateHeight(root);
         updateHeight(newRoot);
@@ -153,11 +165,11 @@ public class BinaryTreeAVL {
 
     // Método de rotação a direita
     private Node rotateRight(Node root) {
-        Node newRoot = root.getLeft();
-        Node subTree = newRoot.getRight();
+        Node newRoot = root.left;
+        Node subTree = newRoot.right;
 
-        newRoot.setRight(root);
-        root.setLeft(subTree);
+        newRoot.right = root;
+        root.left = subTree;
 
         updateHeight(root);
         updateHeight(newRoot);
@@ -172,10 +184,23 @@ public class BinaryTreeAVL {
 
     private void recInOrder(Node root) {
         if (root != null) {
-            recInOrder(root.getLeft());
-            System.out.println(root.getValue());
-            recInOrder(root.getRight());
+            recInOrder(root.left);
+            System.out.println(root.value);
+            recInOrder(root.right);
+        }
+    }
+
+    public class Node {
+        public Node left;
+        public Node right;
+        public int height;
+        public int value;
+
+        public Node(int value) {
+            this.value = value;
+            this.left = null;
+            this.right = null;
+            this.height = 1;
         }
     }
 }
-
