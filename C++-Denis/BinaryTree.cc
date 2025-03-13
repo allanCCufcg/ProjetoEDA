@@ -2,9 +2,9 @@
 
 using namespace std;
 
-/*
+/*a
     Aluno: Denis Almeida Ferreira
-    Email: denis.almeida.ferreira@ccc.ufcg.edu.break
+    Email: denis.almeida.ferreira@ccc.ufcg.edu.br
     Matrícula: 123210975
     Usuário no GitHub: DenisAlmeidaFerreira
 
@@ -198,51 +198,3 @@ public:
         return abs(lh - rh) <= 1 && isBalancedRec(node->left) && isBalancedRec(node->right);
     }
 };
-
-int main() {
-    BinaryTree tree;
-    
-    // Inserindo valores na árvore
-    tree.root = tree.insert(50);
-    tree.insert(30);
-    tree.insert(70);
-    tree.insert(20);
-    tree.insert(40);
-    tree.insert(60);
-    tree.insert(80);
-    tree.insert(90);
-    tree.insert(100);
-    tree.insert(110);
-    tree.insert(120);
-
-    // Exibe a altura e número de nós na árvore
-    cout << "Altura da Arvore: " << tree.height() << endl;
-    cout << "Numero de Nos: " << tree.countNodes() << endl;
-    cout << "Arvore balanceada? " << (tree.isBalanced() ? "Sim" : "Nao") << endl;
-
-    // Exibe a árvore em ordem
-    cout << "Percurso Em-Ordem: ";
-    tree.inOrder();
-    cout << endl;
-
-    // Remove alguns valores
-    tree.remove(80);
-    cout << "Percurso Em-Ordem: ";
-    tree.inOrder();
-    cout << endl;
-
-    tree.remove(50);
-    cout << "Percurso Em-Ordem: ";
-    tree.inOrder();
-    cout << endl;
-
-    // Busca um valor na árvore
-    int value = 90;
-    if (tree.search(value)) {
-        cout << "O valor " << value << " esta presente na arvore.\n";
-    } else {
-        cout << "O valor " << value << " nao foi encontrado.\n";
-    }
-
-    return 0;
-}
