@@ -1,105 +1,131 @@
 import time
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
+import csv
+import os
 from BinaryTree import BinaryTree
 from BinaryTreeAVL import AVLTree
 import random
-
-    # Aluno: Jessé Oliveira das Chagas
-    # Email: jesse.oliveira.chagas@ccc.ufcg.edu.br
-    # Matrícula: 123210473
-    # User do GitHub: jessechagas
+import sys
 
 
-def gerar_dados_aleatorios(tamanho):
+    #Aluno: Jessé Oliveira das Chagas
+    #Email: jesse.oliveira.chagas@ccc.ufcg.edu.br
+    #Matrícula: 123210473
+    #Nome de usuário do GitHub: jessechagas
+
+
+# Defina o limite com base no maior número de elementos esperado
+sys.setrecursionlimit(1000000) 
+
+def gerar_dados_aleatorios(tamanho):         
     return random.sample(range(1, tamanho * 10), tamanho)
 
+def gerar_dados_ordenados_binaria(tamanho):
+    return list(range(1, tamanho + 1)) 
+
+def gerar_dados_ordenados_avl(tamanho):
+    return list(range(1, tamanho + 1))
+
 def test_binary_tree(valores):
-    arvore = BinaryTree()
+    arvore = BinaryTree()  # Sem balanceamento, árvore binária simples
     inicio = time.time()
-    
+
     for valor in valores:
-        arvore.insert(valor)
+        arvore.insert(valor)  # Inserção na árvore binária simples (desbalanceada)
+
     tempo_insercao = time.time() - inicio
 
     inicio = time.time()
     for valor in valores:
-        arvore.search(valor)
+        arvore.search(valor)  # Busca na árvore binária
     tempo_busca = time.time() - inicio
 
     inicio = time.time()
     for valor in valores:
-        arvore.remove(valor)
+        arvore.remove(valor)  # Remoção na árvore binária
     tempo_remocao = time.time() - inicio
 
     return tempo_insercao, tempo_busca, tempo_remocao
 
 def test_avl_tree(valores):
-    arvore = AVLTree()
+    arvore = AVLTree()  # Árvore AVL balanceada
     inicio = time.time()
-    
+
     for valor in valores:
-        arvore.insert(valor)
+        arvore.insert(valor)  # Inserção na árvore AVL
     tempo_insercao = time.time() - inicio
 
     inicio = time.time()
     for valor in valores:
-        arvore.search(valor)
+        arvore.search(valor)  # Busca na árvore AVL
     tempo_busca = time.time() - inicio
 
     inicio = time.time()
     for valor in valores:
-        arvore.remove(valor)
+        arvore.remove(valor)  # Remoção na árvore AVL
     tempo_remocao = time.time() - inicio
 
     return tempo_insercao, tempo_busca, tempo_remocao
 
+def salvar_csv(nome_arquivo, dados):
+    caminho_pasta = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'csv dados')
+    os.makedirs(caminho_pasta, exist_ok=True)
+    caminho_arquivo = os.path.join(caminho_pasta, nome_arquivo)
+    
+    with open(caminho_arquivo, mode='w', newline='', encoding='utf-8') as arquivo_csv:
+        escritor = csv.writer(arquivo_csv)
+        escritor.writerow(["Tamanho", "Arvore", "Operacao", "Tempo"])
+        escritor.writerows(dados)
+
 def executar_teste():
-    entradas = [10000, 50000, 100000, 250000, 500000, 1000000]
-    tempos_binaria = {"insercao": [], "busca": [], "remocao": []}
-    tempos_avl = {"insercao": [], "busca": [], "remocao": []}
+    entradas_binaria = [10000, 50000, 100000, 250000, 500000, 1000000]  # Entradas ordenadas para a árvore binária
+    entradas_avl = [10000, 50000, 100000, 250000, 500000, 1000000]  # Entradas ordenadas para a árvore AVL
+    
+    escolha = input("Escolha o tipo de entrada (1 - Aleatória, 2 - Ordenada): ")
+    if escolha == "1":
+        tipo_dados = "aleatorio"
+        gerar_dados = gerar_dados_aleatorios
+    elif escolha == "2":
+        tipo_dados = "ordenado"
+        gerar_dados = gerar_dados_ordenados_binaria  # Para dados ordenados binários inicialmente
+    else:
+        print("Opção inválida!")
+        return
+    
+    dados_binaria = []
+    dados_avl = []
+    
+    for tamanho in entradas_binaria:
+        print(f"Iniciando teste para {tamanho} elementos (Árvore Binária)...")
+        valores = gerar_dados(tamanho)
 
-    for tamanho in entradas:
-        dados = gerar_dados_aleatorios(tamanho)
-
-        tempo_ins_bin, tempo_bus_bin, tempo_rem_bin = test_binary_tree(dados)
-        tempos_binaria["insercao"].append(tempo_ins_bin)
-        tempos_binaria["busca"].append(tempo_bus_bin)
-        tempos_binaria["remocao"].append(tempo_rem_bin)
-
-        tempo_ins_avl, tempo_bus_avl, tempo_rem_avl = test_avl_tree(dados)
-        tempos_avl["insercao"].append(tempo_ins_avl)
-        tempos_avl["busca"].append(tempo_bus_avl)
-        tempos_avl["remocao"].append(tempo_rem_avl)
+        # Teste da árvore binária
+        tempo_ins_bin, tempo_bus_bin, tempo_rem_bin = test_binary_tree(valores)
+        dados_binaria.append([tamanho, "Binaria", "Inserção", tempo_ins_bin])
+        dados_binaria.append([tamanho, "Binaria", "Busca", tempo_bus_bin])
+        dados_binaria.append([tamanho, "Binaria", "Remoção", tempo_rem_bin])
 
         print(f"Tamanho: {tamanho}")
         print(f"Árvore Binária - Inserção: {tempo_ins_bin:.6f}s, Busca: {tempo_bus_bin:.6f}s, Remoção: {tempo_rem_bin:.6f}s")
+        print()
+    
+    # Alterar para AVL com entradas específicas para AVL
+    gerar_dados = gerar_dados_ordenados_avl  # Para dados ordenados AVL
+    for tamanho in entradas_avl:
+        print(f"Iniciando teste para {tamanho} elementos (Árvore AVL)...")
+        valores = gerar_dados(tamanho)
+
+        # Teste da árvore AVL
+        tempo_ins_avl, tempo_bus_avl, tempo_rem_avl = test_avl_tree(valores)
+        dados_avl.append([tamanho, "AVL", "Inserção", tempo_ins_avl])
+        dados_avl.append([tamanho, "AVL", "Busca", tempo_bus_avl])
+        dados_avl.append([tamanho, "AVL", "Remoção", tempo_rem_avl])
+
+        print(f"Tamanho: {tamanho}")
         print(f"Árvore AVL - Inserção: {tempo_ins_avl:.6f}s, Busca: {tempo_bus_avl:.6f}s, Remoção: {tempo_rem_avl:.6f}s")
         print()
 
-    plt.figure(figsize=(14, 8))
-
-    def formatar_valor(valor, _):
-        if valor >= 1_000_000:
-            return f"{int(valor / 1_000_000)}M"
-        elif valor >= 1_000:
-            return f"{int(valor / 1_000)}k"
-        return str(int(valor))
-
-    for i, (operacao, titulo) in enumerate(zip(["insercao", "busca", "remocao"], ["Tempo de Inserção", "Tempo de Busca", "Tempo de Remoção"]), 1):
-        eixo = plt.subplot(3, 1, i)
-        plt.plot(entradas, tempos_binaria[operacao], label="Árvore Binária", marker="o")
-        plt.plot(entradas, tempos_avl[operacao], label="Árvore AVL", marker="o")
-        plt.title(titulo)
-        plt.xlabel("Tamanho da Entrada")
-        plt.ylabel("Tempo (s)")
-        plt.legend()
-        plt.grid()
-        eixo.xaxis.set_major_formatter(ticker.FuncFormatter(formatar_valor))
-        eixo.set_xticks(entradas)  
-
-    plt.tight_layout()
-    plt.show()
-
+    salvar_csv(f"dados_{tipo_dados}_binaria_python.csv", dados_binaria)
+    salvar_csv(f"dados_{tipo_dados}_avl_python.csv", dados_avl)
+    
 if __name__ == "__main__":
     executar_teste()
