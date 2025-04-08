@@ -99,3 +99,104 @@ class RedBlackTree:
             self._inorder_recursive(node.left)
             print(node.data, node.color, end=' ')
             self._inorder_recursive(node.right)
+
+    def transplant(self, u, v):
+        if not u.parent:
+            self.root = v
+        elif u == u.parent.left:
+            u.parent.left = v
+        else:
+            u.parent.right = v
+        v.parent = u.parent
+
+    def minimum(self, node):
+        while node.left != self.NIL:
+            node = node.left
+        return node
+
+    def remove(self, data):
+        node = self.root
+        z = self.NIL
+        while node != self.NIL:
+            if node.data == data:
+                z = node
+                break
+            elif data < node.data:
+                node = node.left
+            else:
+                node = node.right
+        if z == self.NIL:
+            print("Valor não encontrado na árvore.")
+            return
+
+        y = z
+        y_original_color = y.color
+        if z.left == self.NIL:
+            x = z.right
+            self.transplant(z, z.right)
+        elif z.right == self.NIL:
+            x = z.left
+            self.transplant(z, z.left)
+        else:
+            y = self.minimum(z.right)
+            y_original_color = y.color
+            x = y.right
+            if y.parent == z:
+                x.parent = y
+            else:
+                self.transplant(y, y.right)
+                y.right = z.right
+                y.right.parent = y
+            self.transplant(z, y)
+            y.left = z.left
+            y.left.parent = y
+            y.color = z.color
+        if y_original_color == 'B':
+            self.fix_delete(x)
+
+    def fix_delete(self, x):
+        while x != self.root and x.color == 'B':
+            if x == x.parent.left:
+                sibling = x.parent.right
+                if sibling.color == 'R':
+                    sibling.color = 'B'
+                    x.parent.color = 'R'
+                    self.left_rotate(x.parent)
+                    sibling = x.parent.right
+                if sibling.left.color == 'B' and sibling.right.color == 'B':
+                    sibling.color = 'R'
+                    x = x.parent
+                else:
+                    if sibling.right.color == 'B':
+                        sibling.left.color = 'B'
+                        sibling.color = 'R'
+                        self.right_rotate(sibling)
+                        sibling = x.parent.right
+                    sibling.color = x.parent.color
+                    x.parent.color = 'B'
+                    sibling.right.color = 'B'
+                    self.left_rotate(x.parent)
+                    x = self.root
+            else:
+                sibling = x.parent.left
+                if sibling.color == 'R':
+                    sibling.color = 'B'
+                    x.parent.color = 'R'
+                    self.right_rotate(x.parent)
+                    sibling = x.parent.left
+                if sibling.right.color == 'B' and sibling.left.color == 'B':
+                    sibling.color = 'R'
+                    x = x.parent
+                else:
+                    if sibling.left.color == 'B':
+                        sibling.right.color = 'B'
+                        sibling.color = 'R'
+                        self.left_rotate(sibling)
+                        sibling = x.parent.left
+                    sibling.color = x.parent.color
+                    x.parent.color = 'B'
+                    sibling.left.color = 'B'
+                    self.right_rotate(x.parent)
+                    x = self.root
+        x.color = 'B'
+
