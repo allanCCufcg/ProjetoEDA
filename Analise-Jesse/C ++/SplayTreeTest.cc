@@ -11,6 +11,13 @@
 using namespace std;
 using namespace std::chrono;
 
+/*
+    Aluno: Jessé Oliveira das Chagas
+    Email: jesse.oliveira.chagas@ccc.ufcg.edu.br
+    Matrícula: 123210473
+    Nome de usuário do GitHub: jessechagas
+*/
+
 // Gera dados aleatórios
 vector<int> gerarDadosAleatorios(int tamanho) {
     vector<int> dados(tamanho);

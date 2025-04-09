@@ -1,4 +1,4 @@
-package splayTree;
+package rbTree;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,9 +12,9 @@ import java.util.Scanner;
     Nome de usuário do GitHub: jessechagas
 */
 
-public class SplayTreeTest {
+public class RBTreeTest {
 
-    // Gera dados aleatórios
+    // Gera dados aleatórios para a árvore rubro-negra
     private int[] gerarDadosAleatorios(int tamanho) {
         Random random = new Random();
         int[] dados = new int[tamanho];
@@ -24,35 +24,35 @@ public class SplayTreeTest {
         return dados;
     }
 
-    // Gera dados ordenados
+    // Gera dados ordenados para a árvore rubro-negra
     private int[] gerarDadosOrdenados(int tamanho) {
         int[] dados = new int[tamanho];
         for (int i = 0; i < tamanho; i++) {
-            dados[i] = i + 1;
+            dados[i] = i + 1; // Dados em ordem crescente
         }
         return dados;
     }
 
-    // Testa a SplayTree com inserção, busca e remoção
-    private double[] testSplayTree(int[] valores) {
-        SplayTree arvore = new SplayTree();
+    // Testa a árvore rubro-negra com inserção, busca e remoção
+    private double[] testarRBTree(int[] valores) {
+        RbTree arvore = new RbTree();
         long inicio;
 
-        // Inserção
+        // Teste de inserção
         inicio = System.nanoTime();
         for (int valor : valores) {
             arvore.insert(valor);
         }
         double tempoInsercao = (System.nanoTime() - inicio) / 1e9;
 
-        // Busca
+        // Teste de busca
         inicio = System.nanoTime();
         for (int valor : valores) {
-            arvore.search(valor);
+            arvore.search(valor);  // Método search está presente no código? Se não, crie um acessor público para searchNode
         }
         double tempoBusca = (System.nanoTime() - inicio) / 1e9;
 
-        // Remoção
+        // Teste de remoção
         inicio = System.nanoTime();
         for (int valor : valores) {
             arvore.remove(valor);
@@ -62,8 +62,8 @@ public class SplayTreeTest {
         return new double[]{tempoInsercao, tempoBusca, tempoRemocao};
     }
 
-    // Execução dos testes com entrada do usuário
-    private void executarTeste(int[] tamanhos) {
+    // Executa os testes com os dados e salva os resultados
+    private void executarTestes(int[] tamanhos) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Escolha o tipo de dados para o teste:");
@@ -71,38 +71,45 @@ public class SplayTreeTest {
         System.out.println("2 - Ordenados");
         int escolha = scanner.nextInt();
 
-        String tipo = (escolha == 1) ? "aleatorio" : "ordenado";
-        String nomeArquivo = "dados_" + tipo + "_splay_java.csv";
+        String tipoDados = (escolha == 1) ? "aleatorio" : "ordenado";
+        String fileName = "dados_" + tipoDados + "_rbtree_java.csv";
         StringBuilder csvData = new StringBuilder("Tamanho,Arvore,Operacao,Tempo\n");
 
         for (int tamanho : tamanhos) {
-            int[] dados = (escolha == 1) ? gerarDadosAleatorios(tamanho) : gerarDadosOrdenados(tamanho);
+            int[] dados;
 
-            double[] tempos = testSplayTree(dados);
-            csvData.append(tamanho).append(",Splay,Inserção,").append(tempos[0]).append("\n");
-            csvData.append(tamanho).append(",Splay,Busca,").append(tempos[1]).append("\n");
-            csvData.append(tamanho).append(",Splay,Remoção,").append(tempos[2]).append("\n");
+            if (escolha == 1) {
+                dados = gerarDadosAleatorios(tamanho);
+            } else {
+                dados = gerarDadosOrdenados(tamanho);
+            }
+
+            double[] temposRB = testarRBTree(dados);
+            csvData.append(tamanho).append(",Rubro-Negra,Inserção,").append(temposRB[0]).append("\n");
+            csvData.append(tamanho).append(",Rubro-Negra,Busca,").append(temposRB[1]).append("\n");
+            csvData.append(tamanho).append(",Rubro-Negra,Remoção,").append(temposRB[2]).append("\n");
 
             System.out.println("Tamanho: " + tamanho);
-            System.out.printf("Splay Tree - Inserção: %.6fs, Busca: %.6fs, Remoção: %.6fs%n",
-                    tempos[0], tempos[1], tempos[2]);
+            System.out.printf("Árvore Rubro-Negra - Inserção: %.6fs, Busca: %.6fs, Remoção: %.6fs%n",
+                    temposRB[0], temposRB[1], temposRB[2]);
 
             System.out.println("Pressione Enter para continuar...");
-            scanner.nextLine(); // espera Enter
             scanner.nextLine(); // limpa buffer
+            scanner.nextLine(); // aguarda enter
         }
 
-        try (FileWriter writer = new FileWriter(nomeArquivo)) {
+        // Salva os resultados em CSV
+        try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(csvData.toString());
-            System.out.println("Dados salvos em '" + nomeArquivo + "'.");
+            System.out.println("Dados salvos em '" + fileName + "'.");
         } catch (IOException e) {
-            System.err.println("Erro ao salvar o CSV: " + e.getMessage());
+            System.err.println("Erro ao salvar o arquivo CSV: " + e.getMessage());
         }
     }
 
     public static void main(String[] args) {
-        SplayTreeTest teste = new SplayTreeTest();
+        RBTreeTest teste = new RBTreeTest();
         int[] entradas = {10000, 50000, 100000, 250000, 500000, 1000000};
-        teste.executarTeste(entradas);
+        teste.executarTestes(entradas);
     }
 }
