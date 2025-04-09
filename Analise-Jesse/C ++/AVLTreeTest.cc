@@ -5,8 +5,8 @@
 #include <random>
 #include <string>
 #include <limits>
-#include <algorithm> // Necessário para std::shuffle
-#include "AVLTree.cc" // Supondo que a AVL está em um arquivo separado
+#include <algorithm>
+#include "AVLTree.cc" 
 
 using namespace std;
 using namespace chrono;

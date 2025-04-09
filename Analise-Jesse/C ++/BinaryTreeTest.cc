@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <limits>
 #include <string>
-#include "BinaryTree.cc" // Inclui sua árvore binária
+#include "BinaryTree.cc"
 
 using namespace std;
 using namespace std::chrono;
