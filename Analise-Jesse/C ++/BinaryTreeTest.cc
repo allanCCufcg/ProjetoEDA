@@ -54,9 +54,10 @@ vector<double> testBinaryTree(vector<int>& valores) {
     fim = high_resolution_clock::now();
     double tempoBusca = duration<double>(fim - inicio).count();
 
+    // Remoção em ordem inversa (do último valor para o primeiro)
     inicio = high_resolution_clock::now();
-    for (int valor : valores) {
-        arvore.root = arvore.remove(valor);
+    for (auto it = valores.rbegin(); it != valores.rend(); ++it) {
+        arvore.root = arvore.remove(*it);
     }
     fim = high_resolution_clock::now();
     double tempoRemocao = duration<double>(fim - inicio).count();
