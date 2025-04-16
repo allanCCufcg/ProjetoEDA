@@ -158,31 +158,3 @@ public:
         printTreeRec(root, 0);
     }
 };
-
-int main() {
-    SplayTree tree;
-    tree.insert(10);
-    tree.insert(20);
-    tree.insert(30);
-    tree.insert(40);
-    tree.insert(50);
-    tree.insert(25);
-    
-    cout << "\nÁrvore Splay após inserções:" << endl;
-    tree.printTree();
-    
-    tree.search(30);
-    cout << "\nÁrvore Splay após buscar 30:" << endl;
-    tree.printTree();
-    
-    tree.remove(30);
-    cout << "\nÁrvore Splay após remover 30:" << endl;
-    tree.printTree();
-
-    cout << "\n";
-
-    tree.insert(35);
-    tree.printTree();
-    
-    return 0;
-}
