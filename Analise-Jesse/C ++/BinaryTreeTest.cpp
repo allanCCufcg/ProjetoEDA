@@ -16,6 +16,13 @@ using namespace std::chrono;
     Email: jesse.oliveira.chagas@ccc.ufcg.edu.br
     Matrícula: 123210473
     Nome de usuário do GitHub: jessechagas
+
+    Brevemente modificado por:
+
+    Aluno: Denis Almeida Ferreira
+    Email: denis.almeida.ferreira@ccc.ufcg.edu.br
+    Matrícula: 123210975
+    Usuário no GitHub: DenisAlmeidaFerreira
 */
 
 // Função para gerar dados aleatórios
@@ -54,8 +61,11 @@ vector<double> testBinaryTree(vector<int>& valores) {
     fim = high_resolution_clock::now();
     double tempoBusca = duration<double>(fim - inicio).count();
 
+    vector<int> valoresDecrescentes = valores;
+    sort(valoresDecrescentes.begin(), valoresDecrescentes.end(), greater<int>());
+
     inicio = high_resolution_clock::now();
-    for (int valor : valores) {
+    for (int valor : valoresDecrescentes) {
         arvore.root = arvore.remove(valor);
     }
     fim = high_resolution_clock::now();
@@ -96,16 +106,13 @@ void executarTeste() {
     for (int tamanho : entradas) {
         vector<int> dados = (escolha == 1) ? gerarDadosAleatorios(tamanho) : gerarDadosOrdenados(tamanho);
         vector<double> tempos = testBinaryTree(dados);
-
+    
         arquivo << tamanho << ",Binaria,Insercao," << tempos[0] << "\n";
         arquivo << tamanho << ",Binaria,Busca," << tempos[1] << "\n";
         arquivo << tamanho << ",Binaria,Remocao," << tempos[2] << "\n";
-
+    
         cout << "Tamanho: " << tamanho << "\n";
         printf("Árvore Binária - Inserção: %.6fs, Busca: %.6fs, Remoção: %.6fs\n", tempos[0], tempos[1], tempos[2]);
-
-        cout << "Pressione Enter para continuar com o próximo tamanho...\n";
-        cin.ignore();
     }
 
     arquivo.close();
