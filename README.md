@@ -1,26 +1,38 @@
 # Projeto EDA - Estruturas de Dados 🚀
 
-Este repositório contém implementações de árvores binárias em diversas linguagens de programação, incluindo Python, Java e C++. O objetivo é fornecer exemplos práticos e didáticos sobre o funcionamento dessa estrutura de dados fundamental.
+Este repositório apresenta um estudo comparativo completo entre diferentes tipos de **árvores binárias** implementadas nas linguagens **Python, Java e C++**. O foco principal é analisar o desempenho dessas estruturas em cenários distintos de entrada (dados ordenados e aleatórios), utilizando medições práticas para entender os pontos fortes e limitações de cada linguagem e implementação.
 
-Linguagens Implementadas
+## Linguagens e Autores
 
-Python 🐍
+- **Python 🐍** – Allan  
+- **Java ☕** – Emerson  
+- **C++ 💻** – Denis  
 
-Java ☕
+## Estruturas Implementadas
 
-C++ 💻
+Foram desenvolvidas quatro variações clássicas de árvores binárias:
 
-# Funcionalidades
+- Árvore Binária de Busca (BST)  
+- Árvore AVL  
+- Árvore Rubro-Negra (Red-Black Tree)  
+- Árvore Splay
 
-Inserção de nós
+Cada implementação inclui as seguintes funcionalidades:
 
-Remoção de nós
+- Inserção de elementos  
+- Remoção de elementos  
+- Busca de elementos  
+- Percursos: in-order, pre-order e post-order  
+- Cálculo da altura da árvore  
 
-Busca de elementos
+## Objetivo
 
-Percursos: in-order, pre-order e post-order
+O objetivo principal do projeto é **comparar o comportamento e a eficiência das árvores binárias em diferentes linguagens**. Além da implementação, foram realizados **testes de desempenho com conjuntos de dados ordenados e aleatórios**, visando analisar:
 
-Cálculo da altura da árvore
+- Tempo de inserção  
+- Tempo de busca  
+- Tempo de remoção  
+
 
 
 ## 📂 Estrutura do Repositório
