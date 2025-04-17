@@ -234,27 +234,3 @@ public:
         if (originalColor == BLACK) fixDeletion(fixNode);
     }
 };
-
-int main() {
-    RBTree rbTree;
-
-    cout << "Inserindo valores..." << endl;
-    rbTree.insert(10);
-    rbTree.insert(20);
-    rbTree.insert(30);
-    rbTree.insert(40);
-    rbTree.insert(50);
-    rbTree.insert(25);
-
-    cout << "\nÁrvore após inserções:" << endl;
-    rbTree.printTree();
-
-    cout << "\nRemovendo valores..." << endl;
-    rbTree.remove(30);
-    rbTree.remove(10);
-
-    cout << "\nÁrvore após remoções:" << endl;
-    rbTree.printTree();
-
-    return 0;
-}
