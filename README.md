@@ -6,7 +6,8 @@ Este repositório apresenta um estudo comparativo completo entre diferentes tipo
 
 - **Python 🐍** – Allan  
 - **Java ☕** – Emerson  
-- **C++ 💻** – Denis  
+- **C++ 💻** – Denis
+- **Análise 📊** - Jessé 
 
 ## Estruturas Implementadas
 
